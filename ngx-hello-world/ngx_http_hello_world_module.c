@@ -17,7 +17,7 @@ struct ngx_http_world_loc_conf_s
   ngx_flag_t enable;
 };
 typedef struct ngx_http_world_loc_conf_s ngx_http_world_loc_conf_t;
-static ngx_int_t ngx_http_hello_world_init(ngx_conf_t * cf);
+static ngx_int_t ngx_http_hello_world_init(ngx_conf_t *cf);
 static void *ngx_http_hello_world_create_loc_conf(ngx_conf_t *cf);
 static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r);
 static ngx_command_t ngx_http_hello_world_commands[] = {
@@ -35,7 +35,7 @@ static ngx_command_t ngx_http_hello_world_commands[] = {
     ngx_null_command,
 };
 /** 初始化注册函数 **/
-static ngx_int_t ngx_http_hello_world_init(ngx_conf_t * cf)
+static ngx_int_t ngx_http_hello_world_init(ngx_conf_t *cf)
 {
   ngx_http_handler_pt *h;
   ngx_http_core_main_conf_t *conf;
@@ -130,9 +130,10 @@ static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
     /* Sending the headers for the reply. */
     r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
     /* Get the content length of the body. */
-    r->headers_out.content_length_n = sizeof(ngx_hello_world) - 1;
+    r->headers_out.content_length_n = sizeof(hello_world_message) - 1;
     ngx_http_send_header(r); /* Send the headers */
+
+    /* Send the body, and return the status code of the output filter chain. */
+    return ngx_http_output_filter(r, &out);
   }
-  /* Send the body, and return the status code of the output filter chain. */
-  return ngx_http_output_filter(r, &out);
 }
