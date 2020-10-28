@@ -10,7 +10,7 @@
 #include <ngx_core.h>
 #include <ngx_http.h>
 
-static u_char hello_world_message[] = "hello world,this is first nginx module";
+static u_char hello_world_message[] = "/*********** perrynzhou ********/\nhello world,this is first nginx module\n/*********** end ********/\n";
 //"heelo_world这个指令的值定义"
 struct ngx_http_world_loc_conf_s
 {
