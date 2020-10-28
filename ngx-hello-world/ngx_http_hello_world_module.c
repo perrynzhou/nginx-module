@@ -32,13 +32,13 @@ static ngx_command_t ngx_http_hello_world_commands[] = {
     ngx_null_command,
 }
 /** 初始化注册函数 **/
-static ngx_int_t ngx_http_hello_world_init(ngx_conf * cf)
+static ngx_int_t ngx_http_hello_world_init(ngx_conf_t * cf)
 {
   ngx_http_handler_pt *h;
   ngx_http_core_main_conf_t *conf;
   conf = ngx_http_conf_get_module_main_conf(cf, ngx_http_core_module);
   h = ngx_array_push(&conf->phases[NGX_HTTP_REWRITE_PHASE], handlers);
-  *h = nngx_http_http_world_handler;
+  *h = ngx_http_hello_world_handler;
   return NGX_OK;
 }
 /**模块继集成**/
@@ -73,10 +73,10 @@ static void *ngx_http_hello_world_create_loc_conf(ngx_conf *cf)
   return conf;
 }
 /** 定义处理函数 */
-static ngx_int_t ngx_http_hello_world_handler(ngx_http_request *r)
+static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
 {
   ngx_http_http_world_loc_conf_t *cf;
-  cf = ngx_http_get_module_loc_conf(r, ngx_http_test_moule);
+  cf = ngx_http_get_module_loc_conf(r, ngx_http_hello_world_module);
   if (cf->enable)
   {
     ngx_buf_t *b;
@@ -107,7 +107,7 @@ static ngx_int_t ngx_http_hello_world_handler(ngx_http_request *r)
   return ngx_http_output_filter(r, &out);
 }
 /**配置指令**/
-ngx_module_t ngx_http_world_module = {
+ngx_module_t ngx_http_hello_world_module = {
     //标准模块填充值
     NGX_MODULE_V1,
     //配置功能函数
