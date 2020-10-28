@@ -40,7 +40,7 @@ static ngx_int_t ngx_http_hello_world_init(ngx_conf_t * cf)
   ngx_http_handler_pt *h;
   ngx_http_core_main_conf_t *conf;
   conf = ngx_http_conf_get_module_main_conf(cf, ngx_http_core_module);
-  h = ngx_array_push(&conf->phases[NGX_HTTP_REWRITE_PHASE], handlers);
+  h = ngx_array_push(&conf->phases[NGX_HTTP_REWRITE_PHASE].handlers);
   *h = ngx_http_hello_world_handler;
   return NGX_OK;
 }
@@ -67,7 +67,7 @@ static ngx_http_module_t ngx_http_hello_world_module_ctx = {
 static void *ngx_http_hello_world_create_loc_conf(ngx_conf_t *cf)
 {
   ngx_http_world_loc_conf_t *conf;
-  conf = ngx_palloc(cf->pool, sizeoof(ngx_http_world_loc_conf_t));
+  conf = ngx_palloc(cf->pool, sizeof(ngx_http_world_loc_conf_t));
   if (conf == NULL)
   {
     return NULL;
@@ -75,6 +75,33 @@ static void *ngx_http_hello_world_create_loc_conf(ngx_conf_t *cf)
   conf->enable = NGX_CONF_UNSET;
   return conf;
 }
+
+/**配置指令**/
+ngx_module_t ngx_http_hello_world_module = {
+    //标准模块填充值
+    NGX_MODULE_V1,
+    //配置功能函数
+    &ngx_http_hello_world_module_ctx,
+    //配置指令数组
+    ngx_http_hello_world_commands,
+    //http模块必须的tag
+    NGX_HTTP_MODULE,
+    //init master
+    NULL,
+    //init module
+    NULL,
+    //init process
+    NULL,
+    //inbit thread
+    NULL,
+    //exit thread
+    NULL,
+    //exit process
+    NULL,
+    //exit master
+    NULL,
+    NGX_MODULE_V1_PADDING,
+};
 /** 定义处理函数 */
 static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
 {
@@ -109,29 +136,3 @@ static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
   /* Send the body, and return the status code of the output filter chain. */
   return ngx_http_output_filter(r, &out);
 }
-/**配置指令**/
-ngx_module_t ngx_http_hello_world_module = {
-    //标准模块填充值
-    NGX_MODULE_V1,
-    //配置功能函数
-    &ngx_http_hello_world_module_ctx,
-    //配置指令数组
-    ngx_http_hello_world_commands,
-    //http模块必须的tag
-    NGX_HTTP_MODULE,
-    //init master
-    NULL,
-    //init module
-    NULL,
-    //init process
-    NULL,
-    //inbit thread
-    NULL,
-    //exit thread
-    NULL,
-    //exit process
-    NULL,
-    //exit master
-    NULL,
-    NGX_MODULE_V1_PADDING,
-};
