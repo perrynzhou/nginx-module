@@ -1,6 +1,5 @@
 
-
-## nginx-hello-world模块编译和测试
+## ngx-hello-world模块编译和测试
 
 - 模块安装
 ```
