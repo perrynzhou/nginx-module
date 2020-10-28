@@ -10,13 +10,13 @@
 #include <ngx_core.h>
 #include <ngx_http.h>
 
-static u_char hello_world_message[] = "hello world,this is first nginx module"
-    //"heelo_world这个指令的值定义"
-    struct ngx_http_http_world_loc_conf_s
+static u_char hello_world_message[] = "hello world,this is first nginx module";
+//"heelo_world这个指令的值定义"
+struct ngx_http_world_loc_conf_s
 {
   ngx_flag_t enable;
 };
-typedef struct ngx_http_http_world_loc_conf_s ngx_http_http_world_loc_conf_t;
+typedef struct ngx_http_world_loc_conf_s ngx_http_world_loc_conf_t;
 static ngx_command_t ngx_http_hello_world_commands[] = {
     {//制定配置指令名称
      ngx_string("hello_world"),
@@ -27,12 +27,12 @@ static ngx_command_t ngx_http_hello_world_commands[] = {
      //配置指令具体数据的位置
      NGX_HTTP_LOC_CONF_OFFSET,
      //具体配置指令的值
-     offsetof(ngx_http_http_world_loc_conf_t, enable),
+     offsetof(ngx_http_world_loc_conf_t, enable),
      NULL},
     ngx_null_command,
 }
 /** 初始化注册函数 **/
-static ngx_int_t ngx_http_http_world_init(ngx_conf * cf)
+static ngx_int_t ngx_http_hello_world_init(ngx_conf * cf)
 {
   ngx_http_handler_pt *h;
   ngx_http_core_main_conf_t *conf;
@@ -46,7 +46,7 @@ static ngx_http_module_t ngx_http_hello_world_module_ctx = {
     //解析配置文件前被调用
     NULL,
     //解析配置文件后被调用
-    ngx_http_http_world_init,
+    ngx_http_hello_world_init,
     //创建http main域的配置结构
     NULL,
     //初始化http main域的配置结构
@@ -61,7 +61,7 @@ static ngx_http_module_t ngx_http_hello_world_module_ctx = {
     NULL,
 };
 /** 创建配置文件数据 **/
-static void *ngx_http_http_world_create_loc_conf(ngx_conf *cf)
+static void *ngx_http_hello_world_create_loc_conf(ngx_conf *cf)
 {
   ngx_http_http_world_loc_conf_t *conf;
   conf = ngx_paloc(cf->pool, sizeoof(ngx_http_http_world_loc_conf_t));
@@ -73,7 +73,7 @@ static void *ngx_http_http_world_create_loc_conf(ngx_conf *cf)
   return conf;
 }
 /** 定义处理函数 */
-static ngx_int_t ngx_http_http_world_handler(ngx_http_request *r)
+static ngx_int_t ngx_http_hello_world_handler(ngx_http_request *r)
 {
   ngx_http_http_world_loc_conf_t *cf;
   cf = ngx_http_get_module_loc_conf(r, ngx_http_test_moule);
