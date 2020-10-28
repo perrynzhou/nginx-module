@@ -105,8 +105,7 @@ ngx_module_t ngx_http_hello_world_module = {
 /** 定义处理函数 */
 static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
 {
-  ngx_http_world_loc_conf_t *cf;
-  cf = ngx_http_get_module_loc_conf(r, ngx_http_hello_world_module);
+  ngx_http_world_loc_conf_t *cf = ngx_http_get_module_loc_conf(r, ngx_http_hello_world_module);
   if (cf->enable)
   {
     ngx_buf_t *b;
@@ -136,4 +135,5 @@ static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
     /* Send the body, and return the status code of the output filter chain. */
     return ngx_http_output_filter(r, &out);
   }
+  return 0;
 }
