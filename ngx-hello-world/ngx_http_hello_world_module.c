@@ -17,6 +17,9 @@ struct ngx_http_world_loc_conf_s
   ngx_flag_t enable;
 };
 typedef struct ngx_http_world_loc_conf_s ngx_http_world_loc_conf_t;
+static ngx_int_t ngx_http_hello_world_init(ngx_conf_t * cf);
+static void *ngx_http_hello_world_create_loc_conf(ngx_conf_t *cf);
+static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r);
 static ngx_command_t ngx_http_hello_world_commands[] = {
     {//制定配置指令名称
      ngx_string("hello_world"),
@@ -30,7 +33,7 @@ static ngx_command_t ngx_http_hello_world_commands[] = {
      offsetof(ngx_http_world_loc_conf_t, enable),
      NULL},
     ngx_null_command,
-}
+};
 /** 初始化注册函数 **/
 static ngx_int_t ngx_http_hello_world_init(ngx_conf_t * cf)
 {
@@ -56,15 +59,15 @@ static ngx_http_module_t ngx_http_hello_world_module_ctx = {
     //合并server域的配置结构
     NULL,
     //创建location域的配置结构
-    ngx_http_test_create_loc_conf,
+    ngx_http_hello_world_create_loc_conf,
     //合并location域的配置结构
     NULL,
 };
 /** 创建配置文件数据 **/
-static void *ngx_http_hello_world_create_loc_conf(ngx_conf *cf)
+static void *ngx_http_hello_world_create_loc_conf(ngx_conf_t *cf)
 {
-  ngx_http_http_world_loc_conf_t *conf;
-  conf = ngx_paloc(cf->pool, sizeoof(ngx_http_http_world_loc_conf_t));
+  ngx_http_world_loc_conf_t *conf;
+  conf = ngx_palloc(cf->pool, sizeoof(ngx_http_world_loc_conf_t));
   if (conf == NULL)
   {
     return NULL;
@@ -75,7 +78,7 @@ static void *ngx_http_hello_world_create_loc_conf(ngx_conf *cf)
 /** 定义处理函数 */
 static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
 {
-  ngx_http_http_world_loc_conf_t *cf;
+  ngx_http_world_loc_conf_t *cf;
   cf = ngx_http_get_module_loc_conf(r, ngx_http_hello_world_module);
   if (cf->enable)
   {
